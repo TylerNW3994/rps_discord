@@ -72,11 +72,12 @@ client.on('message', msg => {
 		if(msg.author.toString().localeCompare(challenged) == 0){
 			ready[CHALLENGED] = true;
 		}
-		//else if(msg.author.toString() == challenger){
 		else if(msg.author.toString().localeCompare(challenger) == 0){
 			ready[CHALLENGER] = true;
 		}
 		if(ready[CHALLENGED] == true && ready[CHALLENGER] == true){
+			crInput = "NA";
+			cdInput = "NA";
 			askForInput(msg);
 			ready[CHALLENGED] = false;
 			ready[CHALLENGER] = false;
@@ -85,58 +86,57 @@ client.on('message', msg => {
 	
 	// User is trying to input into a game
 	if(msg.content === "R" || msg.content === "P" || msg.content === "S"){
-		//if(msg.length === 1){
-			//There isn't a game.
-			if(!game || !gameOn)
-				msg.reply("Looking to start a game?  Type !Challenge");
+		//There isn't a game.
+		if(!game || !gameOn)
+			msg.reply("Looking to start a game?  Type !Challenge");
 		
-			//if(msg.author.toString() == challenged){
-			if(msg.author.toString().localeCompare(challenged) == 0){
-				cdInput = msg.content;
-			}
-			//else if(msg.author.toString() == challenger){
-			else if(msg.author.toString().localeCompare(challenger) == 0){
-				crInput = msg.content;
-			}
-			//Determine winner
-			if(crInput != "NA" && cdInput != "NA"){
-				var choiceR = choices.indexOf(crInput);
-				var choiceD = choices.indexOf(cdInput);
-				msg.channel.send(challenger + " played " + crInput +", " + challengedName + " played " + cdInput);
-				//Tie
-				if(choiceR == choiceD){
-					msg.channel.send("It\'s a tie!  Play again!");
-				} else{
-					//Not a tie
-					var mod = (choiceR - choiceD) % choices.length;
-					mod = mod < 0 ? mod + (choiceR - choiceD) : mod;
-					if (mod < choices.length /2){
-						msg.channel.send(challenger + " won this round!");
-						score[CHALLENGED]++;
-					} else{
-						msg.channel.send(challengedName + " won this round!");
-						score[CHALLENGER]++;
-					}
-					msg.channel.send("Score: " + score[CHALLENGED]+ " - " + score[CHALLENGER]);
-					//Game Over
-					if(score[CHALLENGED] === 3 || score[CHALLENGER] === 3){
-						msg.channel.send("Game Over!");
-						if(score[CHALLENGED] === 3)
-							msg.channel.send(challenger + " won the game!");
-						else
-							msg.channel.send(challengedName + " won the game!");
-						score[CHALLENGED] = 0;
-						score[CHALLENGER] = 0;
-						game = false;
-						gameOn = false;
-					}
-				}
-				crInput = "NA";
-				cdInput = "NA";
-				clearInterval(interval2);
+		//if(msg.author.toString() == challenged){
+		if(msg.author.toString().localeCompare(challenged) == 0){
+			cdInput = msg.content;
+		}
+		//else if(msg.author.toString() == challenger){
+		else if(msg.author.toString().localeCompare(challenger) == 0){
+			crInput = msg.content;
+		}
+		//Determine winner
+		if(crInput != "NA" && cdInput != "NA"){
+			var choiceR = choices.indexOf(crInput);
+			var choiceD = choices.indexOf(cdInput);
+			msg.channel.send(challenger + " played " + crInput +", " + challengedName + " played " + cdInput);
+			//Tie
+			if(choiceR == choiceD){
+				msg.channel.send("It\'s a tie!  Play again!");
 				msg.channel.send("Both players, type !Ready when you are ready!");
+			} else{
+				//Not a tie
+				var mod = (choiceR - choiceD) % choices.length;
+				mod = mod < 0 ? mod + (choiceR - choiceD) : mod;
+				if (mod < choices.length /2){
+					msg.channel.send(challenger + " won this round!");
+					score[CHALLENGED]++;
+				} else{
+					msg.channel.send(challengedName + " won this round!");
+					score[CHALLENGER]++;
+				}
+				msg.channel.send("Score: " + score[CHALLENGED]+ " - " + score[CHALLENGER]);
+				//Game Over
+				if(score[CHALLENGED] === 3 || score[CHALLENGER] === 3){
+					msg.channel.send("Game Over!");
+					if(score[CHALLENGED] === 3)
+						msg.channel.send(challenger + " won the game!");
+					else
+						msg.channel.send(challengedName + " won the game!");
+					score[CHALLENGED] = 0;
+					score[CHALLENGER] = 0;
+					game = false;
+					gameOn = false;
+				}
 			}
-		//}
+			crInput = "NA";
+			cdInput = "NA";
+			clearInterval(interval2);
+			msg.channel.send("Both players, type !Ready when you are ready!");
+		}
 	}
 });
 
