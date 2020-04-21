@@ -50,6 +50,7 @@ client.on('message', msg => {
 					default: other = "jumping into a random Zoom call"; break;
 				}
 				msg.reply(", you can't challenge yourself to a game of Rock Paper Scissors! Go try " + other + " instead!");
+				return;
 			}
 			
 			// Returns if the challenged user is offline.
