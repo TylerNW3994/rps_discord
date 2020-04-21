@@ -34,7 +34,7 @@ client.on('message', msg => {
 			challenged = msg.mentions.users.first();
 			
 			// User can't challenge themselves.
-			if(msg.author.toString().localeCompare(challenged)){
+			if(msg.author.toString().localeCompare(challengedName)){
 				var num = Math.floor((Math.random() * 10) + 1);
 				var other = "";
 				switch(num){
