@@ -1,43 +1,78 @@
-var Discord = require('discord.io');
-var DiscordUtils = require('discord.js');
-var logger = require('winston');
-// Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
-    colorize: true
+const Discord = require('discord.js');
+const client = new Discord.Client();
+
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
 });
-logger.level = 'debug';
-// Initialize Discord Bot
-var bot = new Discord.Client({
-   autorun: true
+var game = false;
+var gameOn = false;
+var challenged, cdInput;
+var challenger, crInput;
+var score = [0,0];
+var choices =["R", "P", "S"];
+
+client.on('message', msg => {
+  if(msg.content === '!Challenge') {
+	//Have only one game going on at one point.
+	if(game){
+		message.reply("A game is currently ongoing!  Wait until the current game is finished!");
+		return;
+	}
+	
+	//User only typed !Challenge but didn't specifiy who they wanted to challenge.
+	if(!msg.mentions.users.size.first()){
+		message.reply("You need to specifiy who to challenge.  Type out: !Challenge @<user you want to challenge>");
+		return;
+	}
+	
+    if(msg.mentions.users.size){
+		challenged = msg.mentions.users.first();
+		
+		// Returns if the challenged user is offline.
+		if(challenged.presence.status == "offline"){
+			msg.reply(challenged + " is offline!");
+			return;
+		}
+		
+		//User exists and is online.  Game on!
+		message.channel.send(message.author.toString() + " has challenged " + challenged + " to a Rock Paper Scissors Game!");
+		message.channel.send("First to three wins!");
+		message.channel.send(challenged ": type !GameOn to accept!");
+		
+		//Give the challenged user 30 seconds to respond.
+		var interval = setInterval(function(){
+			message.channel.send(challenged + " didn't accept the challenge in time! Game cancelled!").catch(console.error);
+			game = false;
+		}, 30000);
+	} else
+		msg.reply("Please mention a valid user!");
+	
+	//User is trying to respond to a challenge.
+	if(msg.content === "!GameOn"){
+		if(!game){
+			message.reply("There isn't a game going on right now!  Type !Challenge to challenge another user!");
+			return;
+		}
+		gameOn = true;
+		if(message.author.toString() == challenged){
+			
+		}
+		else if(message.author.toString() == challenger){
+			
+		}
+		return;
+	}
+	
+	// User is trying to input into a game
+	if(msg.content === "R" || msg.content === "P" || msg.content === "S"){
+		if(msg.length === 1){
+			//There isn't a game.
+			if(!game || !gameOn)
+				message.reply("Looking to start a game?  Type !Challenge");
+			
+		}
+	}
+  }
 });
-bot.on('ready', function (evt) {
-    logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(bot.username + ' - (' + bot.id + ')');
-});
-bot.on('message', function (user, userID, channelID, message, evt) {
-    // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!`
-    if (message.substring(0, 1) == '!') {
-        var args = message.substring(1).split(' ');
-        var cmd = args[0];
-       
-        //args = args.splice(1);
-        switch(cmd) {
-            // !Challenge another player to a game!
-			// !Challenge <user> <numberOfRounds>
-            case 'Challenge':
-				if(args.length == 2){
-					//Gets challenged user and checks if they are online.
-					var challenged = args[1];
-					if(challenged.)
-				}
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'Pong!'
-                });
-            break;
-        }
-    }
-});
+
+client.login('token');
