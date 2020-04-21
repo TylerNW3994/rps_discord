@@ -6,8 +6,8 @@ client.on('ready', () => {
 });
 var game = false;
 var gameOn = false;
-var challenged, cdInput;
-var challenger, crInput;
+var challenged, cdInput ="NA";
+var challenger, crInput ="NA";
 var score = [0,0];
 var choices =["R", "P", "S"];
 
@@ -54,12 +54,7 @@ client.on('message', msg => {
 			return;
 		}
 		gameOn = true;
-		if(message.author.toString() == challenged){
-			
-		}
-		else if(message.author.toString() == challenger){
-			
-		}
+		
 		return;
 	}
 	
@@ -69,7 +64,47 @@ client.on('message', msg => {
 			//There isn't a game.
 			if(!game || !gameOn)
 				message.reply("Looking to start a game?  Type !Challenge");
-			
+		
+			if(message.author.toString() == challenged){
+				cdInput = msg.content;
+			}
+			else if(message.author.toString() == challenger){
+				crInput = msg.content;
+			}
+			//Determine winner
+			if(crInput != "NA" && cdInput != "NA"){
+				var choiceR = choices.indexOf(crInput);
+				var choiceD = choices.indexOf(cdInput);
+				message.channel.send(challenger + " played " + crInput +", challenged played " + cdInput);
+				//Tie
+				if(choiceR == choiceD){
+					message.channel.send("It's a tie!  Play again!");
+					crInput = "NA";
+					cdInput = "NA";
+				}
+				//Not a tie
+				var mod = (choiceR - choiceD) % choices.length;
+				mod = mod < 0 ? mod + (choiceR - choiceD) : mod;
+				if (mod < choices.length /2){
+					message.channel.send(challenger + " won this round!");
+					score[0]++;
+				} else{
+					message.channel.send(challenged + " won this round!");
+					score[1]++;
+				}
+				//Game Over
+				if(score[0] === 3 || score[1] === 3){
+					message.channel.send("Game Over!");
+					if(score[0] === 3)
+						message.channel.send(challenger + " won the game!");
+					else
+						message.channel.send(challenged + " won the game!");
+					score[0] = 0;
+					score[1] = 0;
+					game = false;
+					gameOn = false;
+				}
+			}
 		}
 	}
   }
