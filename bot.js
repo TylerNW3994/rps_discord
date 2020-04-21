@@ -37,7 +37,7 @@ client.on('message', msg => {
 		//User exists and is online.  Game on!
 		message.channel.send(message.author.toString() + " has challenged " + challenged + " to a Rock Paper Scissors Game!");
 		message.channel.send("First to three wins!");
-		message.channel.send(challenged ": type !GameOn to accept!");
+		message.channel.send(challenged + ": type !GameOn to accept!");
 		
 		//Give the challenged user 30 seconds to respond.
 		var interval = setInterval(function(){
