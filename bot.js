@@ -20,7 +20,7 @@ client.on('message', msg => {
 	}
 	
 	//User only typed !Challenge but didn't specifiy who they wanted to challenge.
-	if(!msg.mentions.users.size.first()){
+	if(!msg.mentions.users.first()){
 		message.reply("You need to specifiy who to challenge.  Type out: !Challenge @<user you want to challenge>");
 		return;
 	}
@@ -110,4 +110,4 @@ client.on('message', msg => {
   }
 });
 
-client.login('token');
+client.login('NzAyMjAxNDY0MzEwOTg4ODMw.Xp8-Ng.5vOQzF2SEPl2OYCFqOmRHpn07hw');
