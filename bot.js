@@ -170,4 +170,4 @@ function askForInput(msg){
 	}, 4000);
 }
 
-client.login('token');
+client.login(process.env.TOKEN);
