@@ -1,4 +1,5 @@
 var Discord = require('discord.io');
+var DiscordUtils = require('discord.js');
 var logger = require('winston');
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -22,16 +23,21 @@ bot.on('message', function (user, userID, channelID, message, evt) {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
        
-        args = args.splice(1);
+        //args = args.splice(1);
         switch(cmd) {
-            // !ping
-            case 'ping':
+            // !Challenge another player to a game!
+			// !Challenge <user> <numberOfRounds>
+            case 'Challenge':
+				if(args.length == 2){
+					//Gets challenged user and checks if they are online.
+					var challenged = args[1];
+					if(challenged.)
+				}
                 bot.sendMessage({
                     to: channelID,
                     message: 'Pong!'
                 });
             break;
-            // Just add any case commands if you want to..
-         }
-     }
+        }
+    }
 });
