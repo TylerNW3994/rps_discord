@@ -33,6 +33,25 @@ client.on('message', msg => {
 			challengedName = args[1];
 			challenged = msg.mentions.users.first();
 			
+			// User can't challenge themselves.
+			if(msg.author.toString().localeCompare(challenged)){
+				var num = Math.floor((Math.random() * 10) + 1);
+				var other = "";
+				switch(num){
+					case 1: other = "knitting"; break;
+					case 2: other = "learn to read"; break;
+					case 3: other = "crying"; break;
+					case 4: other = "learning to speak Klingon"; break;
+					case 5: other = "cooking with Gordon Ramsey"; break;
+					case 6: other = "talking to a girl for once"; break;
+					case 7: other = "making Minecraft using only HTML"; break;
+					case 8: other = "building a house exclusively out of Lincoln Logs"; break;
+					case 9: other = "proving Santa doesn\'t exist"; break;
+					default: other = "jumping into a random Zoom call"; break;
+				}
+				msg.reply(", you can't challenge yourself to a game of Rock Paper Scissors! Go try " + other + " instead!");
+			}
+			
 			// Returns if the challenged user is offline.
 			if(challenged.presence.status == "offline"){
 				msg.reply(challengedName + " is offline!");
