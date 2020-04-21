@@ -49,7 +49,7 @@ client.on('message', msg => {
 					case 9: other = "proving Santa doesn\'t exist"; break;
 					default: other = "jumping into a random Zoom call"; break;
 				}
-				msg.reply(", you can't challenge yourself to a game of Rock Paper Scissors! Go try " + other + " instead!");
+				msg.reply(" you can't challenge yourself to a game of Rock Paper Scissors! Go try " + other + " instead!");
 				return;
 			}
 			
