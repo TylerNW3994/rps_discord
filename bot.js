@@ -34,7 +34,7 @@ client.on('message', msg => {
 			challenged = msg.mentions.users.first();
 			
 			// User can't challenge themselves.
-			if(msg.author.toString().localeCompare(challengedName) == 0){
+			if(msg.author.toString().localeCompare(challenged) == 0){
 				var num = Math.floor((Math.random() * 10) + 1);
 				var other = "";
 				switch(num){
@@ -50,7 +50,7 @@ client.on('message', msg => {
 					default: other = "jumping into a random Zoom call"; break;
 				}
 				msg.reply(" you can't challenge yourself to a game of Rock Paper Scissors! Go try " + other + " instead!");
-				return;
+				return false;
 			}
 			
 			// Returns if the challenged user is offline.
@@ -146,6 +146,7 @@ client.on('message', msg => {
 						msg.channel.send(challenger + " won the game!");
 					else
 						msg.channel.send(challengedName + " won the game!");
+					msg.channel.send("Can we get an F in the chat?");
 					score[CHALLENGED] = 0;
 					score[CHALLENGER] = 0;
 					game = false;
