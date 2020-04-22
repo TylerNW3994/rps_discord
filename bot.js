@@ -155,6 +155,9 @@ client.on('message', msg => {
 					challengedName = "";
 					game = false;
 					gameOn = false;
+					crInput = "NA";
+					cdInput = "NA";
+					return false;
 				}
 			}
 			
