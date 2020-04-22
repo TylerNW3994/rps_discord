@@ -7,7 +7,7 @@ client.on('ready', () => {
 var game = false;
 var gameOn = false;
 var challenged, challengedName, cdInput ="NA";
-const CHALLENGER = 0, CHALLENGED = 1;
+const CHALLENGED = 0, CHALLENGER = 1;
 var challenger, crInput ="NA";
 var score = [0,0];
 var choices = ["R", "P", "S"];
@@ -123,19 +123,20 @@ client.on('message', msg => {
 			var choiceR = choices.indexOf(crInput);
 			var choiceD = choices.indexOf(cdInput);
 			msg.channel.send(challenger + " played " + crInput +", " + challengedName + " played " + cdInput);
+			
 			//Tie
 			if(choiceR == choiceD){
 				msg.channel.send("It\'s a tie!  Play again!");
 				msg.channel.send("Both players, type !Ready when you are ready!");
-			} else{
-				//Not a tie
-				var mod = (choiceR - choiceD) % choices.length;
-				mod = mod < 0 ? mod + (choiceR - choiceD) : mod;
-				if (mod < choices.length /2){
-					msg.channel.send(challenger + " won this round!");
-					score[CHALLENGED]++;
-				} else{
+			} else {
+				
+				//Challenged wins
+				if (choiceD === (choiceR + 1) % choices.length){
 					msg.channel.send(challengedName + " won this round!");
+					score[CHALLENGED]++;
+				//Challenger wins
+				} else{
+					msg.channel.send(challenger + " won this round!");
 					score[CHALLENGER]++;
 				}
 				msg.channel.send("Score: " + score[CHALLENGED]+ " - " + score[CHALLENGER]);
@@ -143,19 +144,24 @@ client.on('message', msg => {
 				if(score[CHALLENGED] === 3 || score[CHALLENGER] === 3){
 					msg.channel.send("Game Over!");
 					if(score[CHALLENGED] === 3)
-						msg.channel.send(challenger + " won the game!");
-					else
 						msg.channel.send(challengedName + " won the game!");
+					else
+						msg.channel.send(challenger + " won the game!");
 					msg.channel.send("Can we get an F in the chat?");
+					msg.channel.send("F");
 					score[CHALLENGED] = 0;
 					score[CHALLENGER] = 0;
+					challenged = null;
+					challenger = null;
+					challengedName = "";
 					game = false;
 					gameOn = false;
 				}
 			}
+			
 			crInput = "NA";
 			cdInput = "NA";
-			clearInterval(interval2);
+			//clearInterval(interval2);
 			msg.channel.send("Both players, type !Ready when you are ready!");
 		}
 	}
@@ -174,7 +180,8 @@ function askForInput(msg){
 		counter++;
 	}, 1000);
 	
-	interval2 = setTimeout(function(){
+	//TODO: Get interval working
+	/*interval2 = setTimeout(function(){
 		if(cdInput = "NA"){
 			if(crInput = "NA")
 				//Neither player responded in time
@@ -188,7 +195,7 @@ function askForInput(msg){
 		else if(crInput = "NA"){
 			msg.channel.send(challengedName + " didn\'t respond");
 		}
-	}, 4000);
+	}, 4000);*/
 }
 
 client.login(process.env.TOKEN);
