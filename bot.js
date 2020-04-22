@@ -127,7 +127,6 @@ client.on('message', msg => {
 			//Tie
 			if(choiceR == choiceD){
 				msg.channel.send("It\'s a tie!  Play again!");
-				msg.channel.send("Both players, type !Ready when you are ready!");
 			} else {
 				
 				//Challenged wins
